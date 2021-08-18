@@ -20,7 +20,7 @@ Organizations:
         # Name is the key by which this org will be referenced in channel
         # configuration transactions.
         # Name can include alphanumeric characters as well as dots and dashes.
-        Name: SampleOrg
+        Name: SampleOrg #조직이름
 
         # SkipAsForeign can be set to true for org definitions which are to be
         # inherited from the orderer system channel during channel creation.  This
@@ -32,18 +32,18 @@ Organizations:
 
         # ID is the key by which this org's MSP definition will be referenced.
         # ID can include alphanumeric characters as well as dots and dashes.
-        ID: SampleOrg
+        ID: SampleOrg  #MSPID
 
         # MSPDir is the filesystem path which contains the MSP configuration.
-        MSPDir: msp
+        MSPDir: msp  #조직의 MSP 경로
 
         # Policies defines the set of policies at this level of the config tree
         # For organization policies, their canonical path is usually
         #   /Channel/<Application|Orderer>/<OrgName>/<PolicyName>
-        Policies: &SampleOrgPolicies
-            Readers:
+        Policies: &SampleOrgPolicies #조직에 대 한 정책 
+            Readers:                 # 읽기 정책
                 Type: Signature
-                Rule: "OR('SampleOrg.member')"
+                Rule: "OR('SampleOrg.member')"  # 정책 타입 (서명, IMpliciMeta)
                 # If your MSP is configured with the new NodeOUs, you might
                 # want to use a more specific rule like the following:
                 # Rule: "OR('SampleOrg.admin', 'SampleOrg.peer', 'SampleOrg.client')"
@@ -56,19 +56,19 @@ Organizations:
             Admins:
                 Type: Signature
                 Rule: "OR('SampleOrg.admin')"
-            Endorsement:
+            Endorsement: #보증정책
                 Type: Signature
                 Rule: "OR('SampleOrg.member')"
 
         # OrdererEndpoints is a list of all orderers this org runs which clients
         # and peers may to connect to to push transactions and receive blocks respectively.
-        OrdererEndpoints:
+        OrdererEndpoints:   #정의하는 조지기 오더러일 경우 오더러 주소
             - "127.0.0.1:7050"
 
         # AnchorPeers defines the location of peers which can be used for
         # cross-org gossip communication. Note, this value is only encoded in
         # the genesis block in the Application section context.
-        AnchorPeers:
+        AnchorPeers:  #정의 하는조직이 피어일 경우 앵커피어주소
             - Host: 127.0.0.1
               Port: 7051
 
@@ -91,7 +91,7 @@ Organizations:
 #   then the v1.0.x peer will deliberately crash.
 #
 ################################################################################
-Capabilities:
+Capabilities:  #각각 사용하는 버전에 대한 정의 ,True
     # Channel capabilities apply to both the orderers and the peers and must be
     # supported by both.
     # Set the value of the capability to true to require it.
@@ -220,11 +220,11 @@ Application: &ApplicationDefaults
     # Policies defines the set of policies at this level of the config tree
     # For Application policies, their canonical path is
     #   /Channel/Application/<PolicyName>
-    Policies: &ApplicationDefaultPolicies
-        LifecycleEndorsement:
+    Policies: &ApplicationDefaultPolicies  #Application 정책에 관한 설정
+        LifecycleEndorsement:  #chaincode LifeCycle 관련한 정책
             Type: ImplicitMeta
             Rule: "MAJORITY Endorsement"
-        Endorsement:
+        Endorsement:            #정책 타입 (Signature,Implictmeta)
             Type: ImplicitMeta
             Rule: "MAJORITY Endorsement"
         Readers:
@@ -278,7 +278,7 @@ Orderer: &OrdererDefaults
 
         # Max Message Count: The maximum number of messages to permit in a
         # batch.  No block will contain more than this number of messages.
-        MaxMessageCount: 500
+        MaxMessageCount: 500   #블럭당 최대 트랜잭션 갯수
 
         # Absolute Max Bytes: The absolute maximum number of bytes allowed for
         # the serialized messages in a batch. The maximum block size is this value
@@ -325,8 +325,8 @@ Orderer: &OrdererDefaults
         Consenters:
             - Host: raft0.example.com
               Port: 7050
-              ClientTLSCert: path/to/ClientTLSCert0
-              ServerTLSCert: path/to/ServerTLSCert0
+              ClientTLSCert: path/to/ClientTLSCert0  #오더러의 tls 클라이언트 인증서
+              ServerTLSCert: path/to/ServerTLSCert0  #오더러의 tls 서버 인증서
             - Host: raft1.example.com
               Port: 7050
               ClientTLSCert: path/to/ClientTLSCert1
